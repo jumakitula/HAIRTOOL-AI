@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HAIRTOOL AI | Clinical Hair Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #1A7A4A;
+  --green-light: #27AE60;
+  --amber: #F39C12;
+  --amber-pale: #FFF8E1;
+  --red: #E74C3C;
+  --blue: #2980B9;
+  --purple: #8E44AD;
+  --bg: #07120E;
+  --bg2: #0a1510;
+  --surface: #111f18;
+  --surface2: #182d21;
+  --surface3: #1e3829;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.13);
+  --text: #EDF7F2;
+  --text2: #93B4A2;
+  --text3: #5D8470;
+  --accent: #3DDC84;
+  --accent2: #2ABB6A;
+  --teal: #00C9B8;
+  --transition: all 0.28s cubic-bezier(0.4,0,0.2,1);
+  --sidebar-w: 240px;
+  --header-h: 64px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{
+  font-family:'Syne',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  display:flex;
+  flex-direction:column;
+}
+
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:4px;}
+
+.app-header{
+  height:var(--header-h);
+  display:flex;align-items:center;
+  padding:0 24px;
+  border-bottom:1px solid var(--border);
+  background:rgba(7,18,14,0.95);
+  backdrop-filter:blur(12px);
+  position:fixed;top:0;left:0;right:0;
+  z-index:200;
+  gap:16px;
+  flex-shrink:0;
+}
+.logo-mark{
+  width:36px;height:36px;
+  border-radius:10px;
+  background:linear-gradient(135deg,var(--surface3),var(--surface2));
+  border:1px solid rgba(61,220,132,0.25);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+}
+.logo-text{
+  font-family:'Instrument Serif',serif;
+  font-size:18px;
+  letter-spacing:-0.01em;
+  color:var(--text);
+  flex-shrink:0;
+}
+.logo-badge{
+  font-family:'Syne',sans-serif;
+  font-size:10px;letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:var(--accent);
+  background:rgba(61,220,132,0.08);
+  border:1px solid rgba(61,220,132,0.2);
+  border-radius:20px;padding:3px 10px;
+  flex-shrink:0;
+}
+.header-spacer{flex:1;}
+.header-status{
+  display:flex;align-items:center;gap:6px;
+  font-size:12px;color:var(--text3);
+  flex-shrink:0;
+}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse-dot 2s ease-in-out infinite;}
+@keyframes pulse-dot{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.header-avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,var(--green),var(--accent));
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:white;flex-shrink:0;cursor:pointer;
+}
+.hamburger{
+  display:none;align-items:center;justify-content:center;
+  width:36px;height:36px;cursor:pointer;flex-shrink:0;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;flex-direction:column;gap:4px;padding:8px;
+}
+.hamburger span{display:block;height:1.5px;background:var(--text2);border-radius:1px;transition:var(--transition);}
+.hamburger span:first-child{width:16px;}
+.hamburger span:nth-child(2){width:12px;}
+.hamburger span:last-child{width:16px;}
+
+.app-body{
+  display:flex;
+  padding-top:var(--header-h);
+  height:100vh;
+  overflow:hidden;
+}
+
+.sidebar{
+  width:var(--sidebar-w);
+  flex-shrink:0;
+  background:var(--bg2);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  position:relative;z-index:100;
+}
+.sidebar-inner{flex:1;overflow-y:auto;padding:16px 12px;}
+.nav-section-label{
+  font-size:10px;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--text3);padding:0 8px;margin:16px 0 6px;
+}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border-radius:10px;
+  cursor:pointer;transition:var(--transition);
+  margin-bottom:2px;color:var(--text2);
+  font-size:13px;font-weight:500;
+  border:1px solid transparent;
+}
+.nav-item:hover{background:var(--surface);color:var(--text);}
+.nav-item.active{
+  background:rgba(61,220,132,0.08);
+  border-color:rgba(61,220,132,0.18);
+  color:var(--accent);
+}
+.nav-icon{width:20px;height:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.nav-item svg path,.nav-item svg circle,.nav-item svg rect{stroke:currentColor;}
+.nav-item.active svg path,.nav-item.active svg circle,.nav-item.active svg rect{stroke:var(--accent);}
+.nav-badge-count{margin-left:auto;font-size:10px;background:rgba(61,220,132,0.15);color:var(--accent);padding:2px 7px;border-radius:10px;font-weight:600;}
+
+.sidebar-footer{
+  padding:16px 12px;
+  border-top:1px solid var(--border);
+}
+.scan-quick-stat{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:12px;
+}
+.sqstat-label{font-size:10px;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;}
+.sqstat-val{font-family:'DM Mono',monospace;font-size:24px;color:var(--accent);}
+.sqstat-sub{font-size:11px;color:var(--text2);margin-top:2px;}
+
+.main{flex:1;overflow-y:auto;position:relative;}
+.screen{display:none;min-height:100%;animation:fadeUp 0.3s ease both;}
+.screen.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+.page-header{
+  padding:28px 32px 0;
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:16px;flex-wrap:wrap;
+}
+.page-title{font-family:'Instrument Serif',serif;font-size:28px;font-weight:400;color:var(--text);letter-spacing:-0.02em;}
+.page-sub{font-size:13px;color:var(--text3);margin-top:4px;}
+.page-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+
+.content-grid{padding:24px 32px;display:grid;gap:18px;}
+.two-col{grid-template-columns:1fr 1fr;}
+.three-col{grid-template-columns:1fr 1fr 1fr;}
+.main-side{grid-template-columns:2fr 1fr;}
+.side-main{grid-template-columns:1fr 2fr;}
+
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:18px;padding:20px;
+}
+.card-sm{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;padding:14px;
+}
+.card-label{
+  font-size:10px;font-weight:600;letter-spacing:0.12em;
+  text-transform:uppercase;color:var(--text3);margin-bottom:12px;
+}
+.card-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px;}
+
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:9px 18px;border-radius:10px;
+  font-size:13px;font-weight:600;cursor:pointer;
+  border:none;font-family:'Syne',sans-serif;
+  transition:var(--transition);
+}
+.btn-primary{background:var(--accent);color:#07120E;}
+.btn-primary:hover{background:var(--accent2);}
+.btn-secondary{background:var(--surface2);color:var(--text2);border:1px solid var(--border2);}
+.btn-secondary:hover{background:var(--surface3);color:var(--text);}
+.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border);}
+.btn-ghost:hover{background:var(--surface);color:var(--text);}
+.btn-sm{padding:6px 14px;font-size:12px;}
+.btn-full{width:100%;justify-content:center;}
+
+.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.metric-box{
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:14px;padding:16px;
+}
+.metric-val{font-family:'DM Mono',monospace;font-size:26px;font-weight:500;color:var(--text);line-height:1.1;}
+.metric-val.green{color:var(--accent);}
+.metric-val.amber{color:var(--amber);}
+.metric-val.red{color:var(--red);}
+.metric-name{font-size:11px;color:var(--text3);margin-top:4px;}
+.metric-delta{font-size:11px;margin-top:5px;}
+.metric-delta.up{color:var(--accent);}
+.metric-delta.dn{color:var(--red);}
+
+.prog-wrap{margin-bottom:14px;}
+.prog-wrap:last-child{margin-bottom:0;}
+.prog-header{display:flex;justify-content:space-between;margin-bottom:6px;}
+.prog-name{font-size:12px;color:var(--text2);}
+.prog-val{font-size:12px;font-family:'DM Mono',monospace;}
+.prog-val.green{color:var(--accent);}
+.prog-val.amber{color:var(--amber);}
+.prog-val.red{color:var(--red);}
+.prog-track{height:5px;background:var(--surface2);border-radius:3px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:3px;transition:width 1s cubic-bezier(.4,0,.2,1);}
+
+.alert{border-radius:13px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:flex-start;gap:12px;}
+.alert:last-child{margin-bottom:0;}
+.alert.success{background:rgba(61,220,132,.07);border:1px solid rgba(61,220,132,.18);}
+.alert.warning{background:rgba(243,156,18,.07);border:1px solid rgba(243,156,18,.18);}
+.alert.info{background:rgba(41,128,185,.07);border:1px solid rgba(41,128,185,.18);}
+.alert.danger{background:rgba(231,76,60,.07);border:1px solid rgba(231,76,60,.18);}
+.alert-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-text{font-size:13px;color:var(--text);line-height:1.5;}
+.alert-sub{font-size:11px;color:var(--text3);margin-top:3px;}
+.alert-action{font-size:12px;color:var(--accent);margin-top:7px;cursor:pointer;font-weight:600;}
+.alert-action:hover{text-decoration:underline;}
+
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;margin-top:6px;}
+.section-title{font-size:14px;font-weight:600;color:var(--text);letter-spacing:-0.01em;}
+.section-action{font-size:12px;color:var(--accent);cursor:pointer;font-weight:500;}
+.section-action:hover{text-decoration:underline;}
+
+.score-hero{display:flex;align-items:center;gap:24px;flex-wrap:wrap;}
+.ring-wrap{position:relative;width:130px;height:130px;flex-shrink:0;}
+.ring-wrap svg{width:100%;height:100%;transform:rotate(-90deg);}
+.ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.ring-score{font-family:'DM Mono',monospace;font-size:38px;font-weight:500;color:var(--text);line-height:1;}
+.ring-label{font-size:10px;color:var(--text3);margin-top:4px;letter-spacing:0.06em;text-transform:uppercase;}
+.score-details{flex:1;}
+.score-title{font-size:18px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.score-sub{font-size:13px;color:var(--text2);}
+.score-trend{font-size:12px;color:var(--accent);margin-top:8px;}
+
+.insight-card{
+  background:linear-gradient(135deg,rgba(61,220,132,.05),rgba(0,201,184,.03));
+  border:1px solid rgba(61,220,132,.16);
+  border-radius:16px;padding:18px;
+}
+.insight-label{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+.insight-text{font-size:13px;color:var(--text2);line-height:1.6;}
+.insight-factors{margin-top:10px;display:flex;flex-direction:column;gap:6px;}
+.insight-factor{font-size:12px;color:var(--text2);padding-left:16px;position:relative;line-height:1.4;}
+.insight-factor::before{content:'·';position:absolute;left:5px;color:var(--accent);}
+.urgency-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 13px;border-radius:20px;font-size:11px;font-weight:600;margin-top:12px;}
+.urgency-badge.monitor{background:rgba(61,220,132,.12);color:var(--accent);}
+.urgency-badge.act-soon{background:rgba(243,156,18,.12);color:var(--amber);}
+.urgency-badge.consult{background:rgba(231,76,60,.12);color:var(--red);}
+.urgency-strip{display:flex;align-items:center;justify-content:space-between;padding:13px 17px;border-radius:13px;margin-bottom:14px;}
+.urgency-strip.monitor{background:rgba(61,220,132,.06);border:1px solid rgba(61,220,132,.14);}
+.urgency-strip.act-soon{background:rgba(243,156,18,.06);border:1px solid rgba(243,156,18,.14);}
+.urgency-strip.consult{background:rgba(231,76,60,.06);border:1px solid rgba(231,76,60,.14);}
+.urgency-strip-label{font-size:13px;font-weight:600;color:var(--text);}
+.urgency-strip-sub{font-size:11px;margin-top:2px;}
+.urgency-strip.monitor .urgency-strip-sub{color:var(--accent);}
+.urgency-strip.act-soon .urgency-strip-sub{color:var(--amber);}
+.urgency-strip.consult .urgency-strip-sub{color:var(--red);}
+.urgency-strip-icon{font-size:22px;}
+
+.bar-chart{display:flex;align-items:flex-end;gap:6px;height:90px;padding:0 4px;}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;height:100%;justify-content:flex-end;}
+.bar{width:100%;border-radius:5px 5px 0 0;transition:height 1s cubic-bezier(.4,0,.2,1);}
+.bar-x{font-size:10px;color:var(--text3);}
+
+.tl-item{display:flex;gap:14px;padding-bottom:22px;position:relative;}
+.tl-left{display:flex;flex-direction:column;align-items:center;}
+.tl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.tl-line{width:1px;flex:1;background:var(--border);margin-top:4px;}
+.tl-content{flex:1;}
+.tl-month{font-size:10px;color:var(--text3);margin-bottom:3px;}
+.tl-text{font-size:12px;color:var(--text2);line-height:1.5;}
+.tl-badge{display:inline-block;margin-top:6px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:500;}
+.tl-badge.done{background:rgba(61,220,132,.1);color:var(--accent);}
+.tl-badge.active{background:rgba(243,156,18,.1);color:var(--amber);}
+.tl-badge.upcoming{background:var(--surface2);color:var(--text3);}
+
+.heatmap-container{display:flex;justify-content:center;padding:10px 0;}
+.heatmap-canvas{border-radius:14px;max-width:100%;height:auto;}
+
+.seg-control{display:flex;background:var(--surface2);border-radius:11px;padding:3px;gap:2px;margin-bottom:16px;}
+.seg-btn{flex:1;padding:7px 8px;border-radius:9px;border:none;background:transparent;color:var(--text3);font-size:12px;font-weight:500;cursor:pointer;font-family:'Syne',sans-serif;transition:var(--transition);}
+.seg-btn.active{background:var(--surface3);color:var(--text);}
+
+.norwood-row{display:flex;gap:8px;overflow-x:auto;padding:4px 0 8px;scrollbar-width:none;}
+.norwood-row::-webkit-scrollbar{display:none;}
+.norwood-card{flex-shrink:0;width:72px;border-radius:14px;background:var(--surface2);border:1px solid var(--border);padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:var(--transition);}
+.norwood-card:hover{border-color:var(--border2);}
+.norwood-card.current{border-color:var(--accent);background:rgba(61,220,132,.06);}
+.norwood-stg{font-size:10px;font-weight:600;letter-spacing:.06em;color:var(--text3);}
+.norwood-card.current .norwood-stg{color:var(--accent);}
+.norwood-you{font-size:9px;color:var(--accent);font-weight:700;}
+.norwood-desc{font-size:12px;color:var(--text2);line-height:1.5;margin-top:8px;padding:12px;background:var(--surface2);border-radius:12px;border:1px solid var(--border);}
+
+.treatment-item{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid var(--border);cursor:default;transition:var(--transition);}
+.treatment-item:last-child{border-bottom:none;}
+.t-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.t-content{flex:1;}
+.t-name{font-size:13px;color:var(--text);font-weight:600;}
+.t-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+.t-check{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:11px;color:transparent;transition:var(--transition);cursor:pointer;flex-shrink:0;}
+.t-check:hover{border-color:var(--accent);}
+.t-check.done{background:var(--accent);border-color:var(--accent);color:#07120E;}
+
+.protocol-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:12px;}
+.protocol-header{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.protocol-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.protocol-icon.teal{background:rgba(0,201,184,.12);}
+.protocol-icon.purple{background:rgba(142,68,173,.12);}
+.protocol-icon.red{background:rgba(231,76,60,.12);}
+.protocol-icon.amber{background:rgba(243,156,18,.12);}
+.protocol-icon.green{background:rgba(61,220,132,.12);}
+.protocol-name{font-size:14px;font-weight:600;color:var(--text);}
+.protocol-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+.protocol-desc{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:12px;}
+.protocol-meta{display:flex;gap:8px;flex-wrap:wrap;}
+.evidence-badge{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.evidence-A{background:rgba(61,220,132,.12);color:var(--accent);}
+.evidence-B{background:rgba(243,156,18,.12);color:var(--amber);}
+.evidence-C{background:var(--surface2);color:var(--text3);}
+.freq-badge{padding:3px 10px;border-radius:20px;font-size:10px;background:var(--surface2);color:var(--text2);}
+.timeline-badge{padding:3px 10px;border-radius:20px;font-size:10px;background:var(--surface2);color:var(--text2);}
+.disclaimer{font-size:11px;color:var(--text3);line-height:1.5;padding:12px 16px;border-radius:12px;background:var(--surface);border:1px solid var(--border);margin-top:6px;font-style:italic;}
+
+.bio-item{padding:14px 0;border-bottom:1px solid var(--border);}
+.bio-item:last-child{border-bottom:none;}
+.bio-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.bio-name{font-size:13px;color:var(--text2);}
+.bio-val{font-size:12px;font-weight:600;font-family:'DM Mono',monospace;}
+.bio-range{font-size:10px;color:var(--text3);margin-top:4px;}
+
+.doc-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:var(--transition);}
+.doc-card:hover{border-color:var(--border2);background:var(--surface2);}
+.doc-avatar{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;background:var(--surface2);}
+.doc-name{font-size:14px;font-weight:600;color:var(--text);}
+.doc-spec{font-size:11px;color:var(--text3);margin-top:2px;}
+.doc-avail{font-size:11px;color:var(--accent);margin-top:3px;}
+.doc-arrow{margin-left:auto;color:var(--text3);font-size:18px;}
+
+.device-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:12px;cursor:pointer;transition:var(--transition);}
+.device-card:hover{border-color:var(--border2);}
+.device-header{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
+.device-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.device-icon.green{background:rgba(61,220,132,.12);}
+.device-icon.blue{background:rgba(41,128,185,.12);}
+.device-icon.purple{background:rgba(142,68,173,.12);}
+.device-name{font-size:14px;font-weight:600;color:var(--text);}
+.device-price{font-size:12px;color:var(--accent);margin-top:2px;}
+.device-desc{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:12px;}
+.spec-row{display:flex;flex-wrap:wrap;gap:6px;}
+.spec-tag{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:10px;color:var(--text2);}
+.device-connect-btn{width:100%;margin-top:14px;padding:11px;border-radius:11px;border:1px solid var(--border2);background:transparent;color:var(--accent);font-size:12px;font-weight:600;cursor:pointer;font-family:'Syne',sans-serif;transition:var(--transition);}
+.device-connect-btn:hover{background:rgba(61,220,132,.08);}
+.device-connect-btn.connected{background:rgba(61,220,132,.1);border-color:rgba(61,220,132,.3);color:var(--accent);}
+
+.scan-layout{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:24px 32px;}
+.scan-camera-panel{display:flex;flex-direction:column;gap:14px;}
+.scan-controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.camera-select{
+  background:var(--surface2);border:1px solid var(--border2);
+  padding:8px 14px;border-radius:10px;color:var(--text);
+  font-family:'Syne',sans-serif;font-size:13px;outline:none;
+  flex-shrink:0;
+}
+.camera-select:focus{border-color:var(--accent);}
+.canvas-wrap{
+  border-radius:16px;background:var(--bg);
+  border:1px solid var(--border);overflow:hidden;
+  position:relative;
+}
+.canvas-wrap canvas{width:100%;display:block;border-radius:16px;}
+.canvas-wrap video{width:100%;display:none;border-radius:16px;}
+.scan-overlay-ring{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
+}
+.scan-ring{width:40%;padding-bottom:40%;border-radius:50%;border:2px dashed rgba(61,220,132,0.4);position:relative;}
+.scan-ring::before{content:'';position:absolute;inset:-12px;border-radius:50%;border:1px solid rgba(61,220,132,0.15);}
+.scan-pulse-ring{position:absolute;inset:0;border-radius:50%;border:2px solid var(--accent);animation:pulse-ring 2s ease-in-out infinite;opacity:0;}
+@keyframes pulse-ring{0%{transform:scale(1);opacity:.7;}100%{transform:scale(1.5);opacity:0;}}
+.quality-bar{display:flex;align-items:center;gap:8px;padding:9px 13px;border-radius:10px;font-size:12px;font-weight:500;}
+.quality-bar.ok{background:rgba(61,220,132,.08);border:1px solid rgba(61,220,132,.2);color:var(--accent);}
+.quality-bar.warn{background:rgba(243,156,18,.08);border:1px solid rgba(243,156,18,.2);color:var(--amber);}
+.quality-bar.bad{background:rgba(231,76,60,.08);border:1px solid rgba(231,76,60,.2);color:var(--red);}
+.preproc-status{font-size:11px;color:var(--text3);font-style:italic;}
+
+.metrics-panel{display:flex;flex-direction:column;gap:14px;}
+.metric-large{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:14px;padding:16px;
+}
+.metric-large .metric-val{font-size:30px;}
+.ai-insight-box{
+  background:linear-gradient(135deg,rgba(61,220,132,.05),rgba(0,201,184,.03));
+  border:1px solid rgba(61,220,132,.15);
+  border-radius:14px;padding:16px;flex:1;
+}
+
+.chat-layout{display:grid;grid-template-columns:1fr 1fr;gap:0;height:calc(100vh - var(--header-h));overflow:hidden;}
+.chat-col{display:flex;flex-direction:column;overflow:hidden;}
+.chat-col:first-child{border-right:1px solid var(--border);}
+.chat-col-header{padding:20px 24px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.chat-col-title{font-size:15px;font-weight:700;color:var(--text);}
+.chat-col-sub{font-size:12px;color:var(--text3);margin-top:2px;}
+.chat-online{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--accent);margin-top:6px;}
+.chat-area{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:12px;}
+.chat-msg{max-width:78%;display:flex;flex-direction:column;gap:4px;}
+.chat-msg.user{align-self:flex-end;align-items:flex-end;}
+.chat-msg.ai{align-self:flex-start;align-items:flex-start;}
+.chat-bubble{padding:12px 16px;border-radius:18px;font-size:13px;line-height:1.5;}
+.chat-msg.user .chat-bubble{background:var(--accent);color:#07120E;border-radius:18px 18px 4px 18px;}
+.chat-msg.ai .chat-bubble{background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:18px 18px 18px 4px;}
+.chat-time{font-size:10px;color:var(--text3);}
+.chat-input-wrap{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:10px;flex-shrink:0;}
+.chat-input{flex:1;background:var(--surface);border:1px solid var(--border2);border-radius:24px;padding:12px 18px;font-size:13px;color:var(--text);font-family:'Syne',sans-serif;outline:none;transition:var(--transition);}
+.chat-input::placeholder{color:var(--text3);}
+.chat-input:focus{border-color:rgba(61,220,132,0.4);}
+.chat-send{width:42px;height:42px;border-radius:50%;background:var(--accent);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:var(--transition);}
+.chat-send:hover{background:var(--accent2);}
+.chat-send svg path{fill:#07120E;}
+.typing-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--text3);margin:0 2px;animation:typingBounce .9s infinite;}
+.typing-dot:nth-child(2){animation-delay:.2s;}
+.typing-dot:nth-child(3){animation-delay:.4s;}
+@keyframes typingBounce{0%,80%,100%{transform:translateY(0);}40%{transform:translateY(-5px);}}
+
+.scanning-overlay{
+  position:fixed;inset:0;background:rgba(7,18,14,0.95);
+  z-index:500;display:none;align-items:center;justify-content:center;
+  flex-direction:column;gap:24px;
+}
+.scanning-overlay.show{display:flex;}
+.scan-progress-ring{position:relative;width:180px;height:180px;}
+.scan-progress-ring svg{width:100%;height:100%;transform:rotate(-90deg);}
+.spr-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;}
+.spr-pct{font-family:'DM Mono',monospace;font-size:42px;color:var(--text);}
+.spr-label{font-size:11px;color:var(--text3);}
+.scan-step{font-size:14px;color:var(--text2);text-align:center;}
+.scan-sub{font-size:12px;color:var(--text3);}
+.scan-steps-list{width:340px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:0;}
+.ss-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--text3);transition:var(--transition);}
+.ss-item:last-child{border-bottom:none;}
+.ss-item.done{color:var(--text2);}
+.ss-item.active{color:var(--accent);}
+.ss-check{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;}
+.ss-check.done{background:var(--accent);border-color:var(--accent);color:#07120E;}
+.ss-check.active{border-color:var(--accent);}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:400;display:none;align-items:center;justify-content:center;padding:24px;}
+.modal-overlay.open{display:flex;}
+.modal-box{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:24px;width:100%;max-width:600px;
+  overflow:hidden;display:flex;flex-direction:column;
+  max-height:calc(100vh - 80px);
+}
+.modal-header{display:flex;align-items:center;gap:12px;padding:20px 24px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.modal-title{font-size:16px;font-weight:700;color:var(--text);flex:1;}
+.modal-close{width:32px;height:32px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);font-size:18px;flex-shrink:0;}
+.modal-close:hover{background:var(--surface2);color:var(--text);}
+.modal-badge{background:rgba(61,220,132,.12);border:1px solid rgba(61,220,132,.3);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--accent);font-weight:600;}
+.scope-preview{flex:1;background:#000;margin:20px 24px;border-radius:16px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:220px;}
+.scope-overlay-canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.35;}
+.scope-controls{padding:16px 24px 20px;flex-shrink:0;}
+.scope-mode-row{display:flex;gap:8px;margin-bottom:14px;}
+.scope-mode-btn{flex:1;padding:9px;border-radius:11px;border:1px solid var(--border);background:var(--surface);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;font-family:'Syne',sans-serif;transition:var(--transition);}
+.scope-mode-btn.active{background:rgba(61,220,132,.1);border-color:rgba(61,220,132,.3);color:var(--accent);}
+.scope-counter{text-align:center;font-size:12px;color:var(--text3);margin-bottom:14px;}
+.scope-counter span{color:var(--accent);font-weight:700;font-family:'DM Mono',monospace;}
+
+.angle-wizard{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:20px;}
+.angle-progress{display:flex;gap:5px;margin-bottom:16px;}
+.angle-step-dot{flex:1;height:3px;border-radius:2px;background:var(--surface2);transition:var(--transition);}
+.angle-step-dot.done{background:var(--accent);}
+.angle-step-dot.active{background:var(--accent);opacity:.6;}
+.angle-label-text{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;text-align:center;}
+.angle-guide{display:flex;justify-content:center;margin-bottom:10px;}
+.angle-instruction{font-size:12px;color:var(--text2);text-align:center;line-height:1.5;margin-bottom:12px;}
+.angle-captured{display:flex;gap:7px;margin-top:12px;justify-content:center;flex-wrap:wrap;}
+.captured-thumb{width:44px;height:44px;border-radius:10px;background:var(--surface2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text3);position:relative;overflow:hidden;}
+.captured-thumb.done{border-color:var(--accent);}
+.captured-thumb.done::after{content:'✓';position:absolute;bottom:2px;right:4px;font-size:9px;color:var(--accent);}
+.angle-nav{display:flex;gap:10px;margin-top:14px;}
+.btn-capture-angle{flex:2;padding:13px;border-radius:13px;border:none;font-size:13px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;transition:var(--transition);background:var(--accent);color:#07120E;}
+.btn-capture-angle:hover{background:var(--accent2);}
+.btn-skip-angle{flex:1;padding:13px;border-radius:13px;border:none;font-size:13px;font-weight:600;cursor:pointer;font-family:'Syne',sans-serif;transition:var(--transition);background:var(--surface2);color:var(--text2);}
+.btn-skip-angle:hover{background:var(--surface3);color:var(--text);}
+
+.toast{
+  position:fixed;bottom:28px;right:28px;
+  background:var(--surface2);border:1px solid rgba(61,220,132,.3);
+  border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:12px;
+  z-index:600;transform:translateY(20px);opacity:0;
+  transition:all .4s cubic-bezier(.4,0,.2,1);pointer-events:none;
+  min-width:280px;
+}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast-icon{color:var(--accent);font-size:18px;}
+.toast-text{font-size:13px;color:var(--text);flex:1;font-weight:600;}
+.toast-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+
+@media (max-width:1100px){
+  .sidebar{width:200px;}
+  :root{--sidebar-w:200px;}
+  .scan-layout{grid-template-columns:1fr;}
+  .chat-layout{grid-template-columns:1fr;}
+  .chat-col:first-child{display:none;}
+  .two-col,.three-col,.main-side,.side-main{grid-template-columns:1fr;}
+}
+@media (max-width:768px){
+  .sidebar{
+    position:fixed;top:var(--header-h);left:0;bottom:0;
+    transform:translateX(-100%);z-index:150;
+  }
+  .sidebar.open{transform:translateX(0);}
+  .sidebar-backdrop{display:none;position:fixed;inset:0;top:var(--header-h);background:rgba(0,0,0,0.5);z-index:149;}
+  .sidebar-backdrop.show{display:block;}
+  .hamburger{display:flex;}
+  .main{overflow-y:auto;}
+  .content-grid{padding:16px;}
+  .page-header{padding:20px 16px 0;}
+  .scan-layout{padding:16px;}
+  .metric-grid{grid-template-columns:1fr;}
+  :root{--sidebar-w:240px;}
+}
+@media (max-width:480px){
+  .page-title{font-size:22px;}
+  .score-hero{flex-direction:column;align-items:flex-start;}
+  .page-actions{flex-wrap:wrap;}
+}
+@media (max-width:1100px){
+  .chat-layout{grid-template-columns:1fr;height:auto;}
+  .chat-col-main{display:flex;flex-direction:column;height:calc(100vh - var(--header-h));}
+}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="hamburger" id="hamburgerBtn" onclick="window.toggleSidebar()">
+    <span></span><span></span><span></span>
+  </div>
+  <div class="logo-mark">🔬</div>
+  <div class="logo-text">HAIRTOOL AI</div>
+  <div class="logo-badge">Clinical v2.4</div>
+  <div class="header-spacer"></div>
+  <div class="header-status">
+    <div class="status-dot"></div>
+    <span>AI Agent Online</span>
+  </div>
+  <div class="header-avatar">AK</div>
+</header>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop" onclick="window.toggleSidebar()"></div>
+
+<div class="app-body">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="nav-section-label">Analysis</div>
+      <div class="nav-item active" id="nav-scan" onclick="window.goTab('scan')"><div class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M2 12a10 10 0 0 1 10-10M22 12a10 10 0 0 1-10 10"/></svg></div>Scan</div>
+      <div class="nav-item" id="nav-dashboard" onclick="window.goTab('dashboard')"><div class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg></div>Dashboard<span class="nav-badge-count">3</span></div>
+      <div class="nav-item" id="nav-map" onclick="window.goTab('map')"><div class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div>Hair Map</div>
+      <div class="nav-section-label">Treatment</div>
+      <div class="nav-item" id="nav-plan" onclick="window.goTab('plan')"><div class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>Protocol</div>
+      <div class="nav-item" id="nav-bio" onclick="window.goTab('bio')"><div class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></div>Lab Results</div>
+      <div class="nav-section-label">Consult</div>
+      <div class="nav-item" id="nav-chat" onclick="window.goTab('chat')"><div class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>AI Specialist</div>
+    </div>
+    <div class="sidebar-footer"><div class="scan-quick-stat"><div class="sqstat-label">Recovery Score</div><div class="sqstat-val" id="sidebarScore">—</div><div class="sqstat-sub" id="sidebarScoreSub">Loading…</div></div></div>
+  </aside>
+
+  <main class="main" id="main">
+    <!-- SCAN -->
+    <div class="screen active" id="screen-scan">
+      <div class="page-header"><div><div class="page-title">Scan</div><div class="page-sub">AI Multi-Angle Clinical Analysis</div></div><div class="page-actions"><button class="btn btn-secondary btn-sm" onclick="window.startScan()">▶ Demo Scan</button><button class="btn btn-primary btn-sm" onclick="window.openMicroscope()">🔬 Dermatoscope</button></div></div>
+      <div class="scan-layout">
+        <div class="scan-camera-panel">
+          <div class="scan-controls"><select id="cameraSelect" class="camera-select"></select><button class="btn btn-secondary btn-sm" id="startCameraBtn">📷 Start Camera</button><button class="btn btn-ghost btn-sm" id="uploadBtn">📂 Upload Image</button><input type="file" id="fileInput" accept="image/*" style="display:none"></div>
+          <div class="canvas-wrap"><video id="video" autoplay playsinline></video><canvas id="preprocessCanvas" width="640" height="480"></canvas><div class="scan-overlay-ring"><div class="scan-ring"><div class="scan-pulse-ring"></div></div></div></div>
+          <div class="quality-bar ok" id="qualityBar"><span>✓</span><span id="qualityMsg">Ready · Upload or start camera</span></div>
+          <div class="preproc-status" id="preprocStatus">No image loaded</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;"><button class="btn btn-primary" id="captureBtn">🔬 Capture & Analyze</button><button class="btn btn-secondary" id="preprocessBtn">⚙ Apply Preprocessing</button></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div class="angle-wizard"><div class="angle-label-text" id="angleName">Step 1 of 5 · Front Hairline</div><div class="angle-progress"><div class="angle-step-dot active" id="adot0"></div><div class="angle-step-dot" id="adot1"></div><div class="angle-step-dot" id="adot2"></div><div class="angle-step-dot" id="adot3"></div><div class="angle-step-dot" id="adot4"></div></div><div class="angle-guide" id="angleGuide"></div><div class="angle-instruction" id="angleInstruction">Face forward, camera at forehead level, 15cm away. Ensure good lighting.</div><div class="angle-captured" id="capturedThumbs"><div class="captured-thumb" id="thumb0">1</div><div class="captured-thumb" id="thumb1">2</div><div class="captured-thumb" id="thumb2">3</div><div class="captured-thumb" id="thumb3">4</div><div class="captured-thumb" id="thumb4">5</div></div><div class="angle-nav"><button class="btn-skip-angle" onclick="window.skipAngle()">Skip</button><button class="btn-capture-angle" onclick="window.captureAngle()">Capture Angle</button></div></div>
+          <div class="metric-grid"><div class="metric-large"><div class="card-label">Follicle Density</div><div class="metric-val green" id="densityVal">—</div><div class="metric-name">follicles/cm²</div></div><div class="metric-large"><div class="card-label">Diameter Variance</div><div class="metric-val" id="varVal">—</div><div class="metric-name">std dev score</div></div><div class="metric-large"><div class="card-label">Miniaturization</div><div class="metric-val amber" id="miniVal">—</div><div class="metric-name">index (0–1)</div></div><div class="metric-large"><div class="card-label">Inflammation Risk</div><div class="metric-val" id="inflamVal">—</div><div class="metric-name">risk index</div></div></div>
+          <button class="btn btn-primary btn-full" id="sendToBackendBtn" disabled>🧠 Send to AI Agent</button>
+          <div class="ai-insight-box" id="aiInsight"><div class="insight-label">AI Agent Recommendation</div><div style="font-size:13px;color:var(--text3);">Waiting for scan analysis…</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="screen" id="screen-dashboard">
+      <div class="page-header"><div><div class="page-title">Dashboard</div><div class="page-sub">Last scan: 3 days ago · 12 total scans</div></div><div class="page-actions"><button class="btn btn-secondary btn-sm" onclick="window.goTab('scan')">+ New Scan</button><button class="btn btn-primary btn-sm" onclick="window.generateReport()">📄 Generate Report</button></div></div>
+      <div class="content-grid" style="padding-top:20px;"><div class="urgency-strip act-soon"><div><div class="urgency-strip-label">Action Recommended</div><div class="urgency-strip-sub">Protocol adherence dropped 18% — review your routine</div></div><div class="urgency-strip-icon">⚡</div></div>
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:18px;"><div class="card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:200px;"><div class="score-hero" style="flex-direction:column;align-items:center;gap:14px;"><div class="ring-wrap"><svg viewBox="0 0 130 130"><circle cx="65" cy="65" r="57" fill="none" stroke="var(--surface2)" stroke-width="8"/><circle id="scoreRing" cx="65" cy="65" r="57" fill="none" stroke="var(--accent)" stroke-width="8" stroke-linecap="round" stroke-dasharray="358" stroke-dashoffset="93" style="transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1);"/></svg><div class="ring-center"><div class="ring-score">74</div><div class="ring-label">Recovery</div></div></div><div style="text-align:center;"><div style="font-size:13px;color:var(--text2);">Norwood Stage III</div><div style="font-size:12px;color:var(--accent);margin-top:4px;">↑ +6 pts from last month</div></div></div></div><div class="insight-card"><div class="insight-label">AI Clinical Insight</div><div class="insight-text">Crown follicle density has improved by 18% since baseline. DHT-mediated miniaturization is slowing — Minoxidil response appears positive.</div><div class="insight-factors"><div class="insight-factor">Sleep deficit contributing to elevated cortisol markers</div><div class="insight-factor">Iron levels borderline — supplementation recommended</div><div class="insight-factor">Left temple shows accelerated recession vs. last scan</div></div><div class="urgency-badge act-soon">⚡ Act Soon · 2 items need attention</div></div></div>
+      <div class="metric-grid"><div class="metric-box"><div class="metric-val green">142</div><div class="metric-name">Crown density /cm²</div><div class="metric-delta up">↑ +22 this month</div></div><div class="metric-box"><div class="metric-val amber">31%</div><div class="metric-name">Miniaturization</div><div class="metric-delta up">↓ −4% improving</div></div><div class="metric-box"><div class="metric-val green">89%</div><div class="metric-name">Protocol adherence</div><div class="metric-delta dn">↓ −11% this week</div></div><div class="metric-box"><div class="metric-val">4.2</div><div class="metric-name">Months monitored</div><div class="metric-delta up">12 scans total</div></div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;"><div><div class="section-header"><div class="section-title">Agent Alerts</div></div><div id="dashboardAlerts"></div></div><div><div class="section-header"><div class="section-title">Density Trend</div><div class="section-action">6 months</div></div><div class="card"><div class="bar-chart" id="densityChart"></div></div><div class="section-header" style="margin-top:14px;"><div class="section-title">Zone Progress</div></div><div class="card"><div class="prog-wrap"><div class="prog-header"><span class="prog-name">Crown</span><span class="prog-val green">142/cm²</span></div><div class="prog-track"><div class="prog-fill" style="width:85%;background:var(--accent);"></div></div></div><div class="prog-wrap"><div class="prog-header"><span class="prog-name">Left Temple</span><span class="prog-val amber">97/cm²</span></div><div class="prog-track"><div class="prog-fill" style="width:58%;background:var(--amber);"></div></div></div><div class="prog-wrap"><div class="prog-header"><span class="prog-name">Right Temple</span><span class="prog-val amber">102/cm²</span></div><div class="prog-track"><div class="prog-fill" style="width:61%;background:var(--amber);"></div></div></div><div class="prog-wrap"><div class="prog-header"><span class="prog-name">Back Donor</span><span class="prog-val green">168/cm²</span></div><div class="prog-track"><div class="prog-fill" style="width:100%;background:var(--accent);"></div></div></div><div class="prog-wrap"><div class="prog-header"><span class="prog-name">Front Hairline</span><span class="prog-val amber">89/cm²</span></div><div class="prog-track"><div class="prog-fill" style="width:53%;background:var(--amber);"></div></div></div></div></div></div>
+      <div><div class="section-header"><div class="section-title">Progress Timeline</div></div><div class="card" id="scanTimeline" style="padding:0 20px;"></div></div></div>
+    </div>
+
+    <!-- HAIR MAP -->
+    <div class="screen" id="screen-map">
+      <div class="page-header"><div><div class="page-title">Hair Map</div><div class="page-sub">Scalp density heatmap · AI zone analysis</div></div><div class="page-actions"><span class="logo-badge">Live AI</span></div></div>
+      <div class="content-grid" style="padding-top:20px;"><div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;"><div class="card"><div class="card-label">Norwood Classification</div><div class="norwood-row" id="norwoodRow"></div><div class="norwood-desc" id="norwoodDesc">Noticeable recession at temples — early intervention window is open. Minoxidil and LLLT recommended.</div></div><div class="card"><div class="card-label">Scalp Heatmap</div><div class="seg-control"><button class="seg-btn active" onclick="window.setMapSeg(this,'current')">Current</button><button class="seg-btn" onclick="window.setMapSeg(this,'month1')">Baseline</button><button class="seg-btn" onclick="window.setMapSeg(this,'diff')">Δ Change</button></div><div class="heatmap-container"><canvas id="heatmapCanvas" width="300" height="200" class="heatmap-canvas"></canvas></div><div style="display:flex;gap:14px;justify-content:center;margin-top:10px;flex-wrap:wrap;"><div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3);"><div style="width:9px;height:9px;border-radius:50%;background:rgba(39,174,96,.8);"></div>Healthy (>130)</div><div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3);"><div style="width:9px;height:9px;border-radius:50%;background:rgba(243,156,18,.8);"></div>Thinning (80–130)</div><div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3);"><div style="width:9px;height:9px;border-radius:50%;background:rgba(231,76,60,.8);"></div>Loss (<80)</div></div></div></div>
+      <div><div class="section-header"><div class="section-title">Zone Detail</div></div><div class="card"><div class="prog-wrap"><div class="prog-header"><span class="prog-name">Crown · 142/cm²</span><span class="prog-val green">Healthy</span></div><div class="prog-track"><div class="prog-fill" style="width:85%;background:var(--accent);"></div></div></div><div class="prog-wrap"><div class="prog-header"><span class="prog-name">Left Temple · 97/cm²</span><span class="prog-val amber">Thinning</span></div><div class="prog-track"><div class="prog-fill" style="width:58%;background:var(--amber);"></div></div></div><div class="prog-wrap"><div class="prog-header"><span class="prog-name">Right Temple · 102/cm²</span><span class="prog-val amber">Thinning</span></div><div class="prog-track"><div class="prog-fill" style="width:61%;background:var(--amber);"></div></div></div><div class="prog-wrap"><div class="prog-header"><span class="prog-name">Back Donor · 168/cm²</span><span class="prog-val green">Excellent</span></div><div class="prog-track"><div class="prog-fill" style="width:100%;background:var(--accent);"></div></div></div><div class="prog-wrap"><div class="prog-header"><span class="prog-name">Front Hairline · 89/cm²</span><span class="prog-val amber">Thinning</span></div><div class="prog-track"><div class="prog-fill" style="width:53%;background:var(--amber);"></div></div></div></div></div>
+      <div><div class="section-header"><div class="section-title">Consult a Specialist</div></div><div class="doc-card" onclick="window.goTab('chat')"><div class="doc-avatar">👩‍⚕️</div><div><div class="doc-name">Dr. Priya Sharma</div><div class="doc-spec">Board-certified Trichologist</div><div class="doc-avail">● Available today · Video or async</div></div><div class="doc-arrow">›</div></div><div class="doc-card" onclick="window.goTab('chat')"><div class="doc-avatar">🤖</div><div><div class="doc-name">AI Hair Specialist</div><div class="doc-spec">Powered by Claude · Knows your scan data</div><div class="doc-avail">● Always available · Instant response</div></div><div class="doc-arrow">›</div></div></div></div>
+    </div>
+
+    <!-- PROTOCOL -->
+    <div class="screen" id="screen-plan">
+      <div class="page-header"><div><div class="page-title">Protocol</div><div class="page-sub">Evidence-based treatment plan · Stage III</div></div><div class="page-actions"><span class="logo-badge">Stage III</span></div></div>
+      <div class="content-grid" style="padding-top:20px;"><div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;"><div><div class="section-header"><div class="section-title">Today · Morning</div><div class="section-action" id="morningDone">0/3 done</div></div><div class="card"><div class="treatment-item"><div class="t-dot" style="background:var(--teal);"></div><div class="t-content"><div class="t-name">Minoxidil 5% Topical</div><div class="t-sub">Apply 1ml to dry scalp · twice daily</div></div><div class="t-check" onclick="window.toggleCheck(this,'morningDone',3)"></div></div><div class="treatment-item"><div class="t-dot" style="background:var(--amber);"></div><div class="t-content"><div class="t-name">Biotin 5000mcg</div><div class="t-sub">With breakfast · supports keratin</div></div><div class="t-check" onclick="window.toggleCheck(this,'morningDone',3)"></div></div><div class="treatment-item"><div class="t-dot" style="background:var(--purple);"></div><div class="t-content"><div class="t-name">LLLT Session</div><div class="t-sub">15 min laser therapy cap · alternate days</div></div><div class="t-check" onclick="window.toggleCheck(this,'morningDone',3)"></div></div></div></div><div><div class="section-header"><div class="section-title">Today · Evening</div><div class="section-action" id="eveningDone">0/2 done</div></div><div class="card"><div class="treatment-item"><div class="t-dot" style="background:var(--teal);"></div><div class="t-content"><div class="t-name">Minoxidil 5% Topical</div><div class="t-sub">Evening application · 2nd dose</div></div><div class="t-check" onclick="window.toggleCheck(this,'eveningDone',2)"></div></div><div class="treatment-item"><div class="t-dot" style="background:var(--accent);"></div><div class="t-content"><div class="t-name">Scalp Massage</div><div class="t-sub">5 min gentle massage · promotes blood flow</div></div><div class="t-check" onclick="window.toggleCheck(this,'eveningDone',2)"></div></div></div></div></div>
+      <div><div class="section-header"><div class="section-title">Full Protocol · Stage III</div></div><div class="protocol-card"><div class="protocol-header"><div class="protocol-icon teal">💧</div><div><div class="protocol-name">Minoxidil 5% Topical</div><div class="protocol-sub">Topical vasodilator · FDA-approved</div></div></div><div class="protocol-desc">Extends anagen (growth) phase and increases follicle size. Most effective for vertex thinning. Clinical response expected within 16 weeks.</div><div class="protocol-meta"><span class="evidence-badge evidence-A">Evidence A</span><span class="freq-badge">2× daily</span><span class="timeline-badge">Results ~16 wks</span></div></div><div class="protocol-card"><div class="protocol-header"><div class="protocol-icon purple">⚡</div><div><div class="protocol-name">LLLT — Low-Level Laser</div><div class="protocol-sub">Device therapy · photobiomodulation</div></div></div><div class="protocol-desc">Stimulates mitochondria in follicle cells, improving ATP production and reducing inflammation. Synergistic with Minoxidil.</div><div class="protocol-meta"><span class="evidence-badge evidence-B">Evidence B</span><span class="freq-badge">3× weekly</span><span class="timeline-badge">Results ~12 wks</span></div></div><div class="protocol-card"><div class="protocol-header"><div class="protocol-icon amber">💊</div><div><div class="protocol-name">Finasteride Evaluation</div><div class="protocol-sub">DHT blocker · consult doctor</div></div></div><div class="protocol-desc">Your DHT signature indicates accelerated miniaturization in temples. Finasteride referral is recommended — consult a dermatologist.</div><div class="protocol-meta"><span class="evidence-badge evidence-A">Evidence A</span><span class="freq-badge">Daily oral</span><span class="timeline-badge">Results ~6 months</span></div></div><div class="protocol-card"><div class="protocol-header"><div class="protocol-icon green">🥦</div><div><div class="protocol-name">Nutritional Protocol</div><div class="protocol-sub">Iron, Vit D, Biotin, Zinc</div></div></div><div class="protocol-desc">Your biomarkers show borderline iron and low Vitamin D — both are causally linked to telogen effluvium. Targeted supplementation is part of your plan.</div><div class="protocol-meta"><span class="evidence-badge evidence-B">Evidence B</span><span class="freq-badge">Daily</span><span class="timeline-badge">Results ~8 wks</span></div></div><div class="disclaimer">⚕️ This protocol is AI-generated based on your scan and biomarker data. Consult a licensed dermatologist before starting any medical treatment, especially Finasteride.</div></div></div>
+    </div>
+
+    <!-- LABS -->
+    <div class="screen" id="screen-bio">
+      <div class="page-header"><div><div class="page-title">Lab Results</div><div class="page-sub">Biomarkers · Updated 2 days ago</div></div><div class="page-actions"><button class="btn btn-secondary btn-sm">+ Add Result</button></div></div>
+      <div class="content-grid" style="padding-top:20px;"><div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;"><div><div class="section-header"><div class="section-title">Hair Loss Markers</div></div><div class="card"><div class="bio-item"><div class="bio-header"><span class="bio-name">DHT (Dihydrotestosterone)</span><span class="bio-val" style="color:var(--amber);">620 pg/mL</span></div><div class="prog-track"><div class="prog-fill" style="width:74%;background:var(--amber);"></div></div><div class="bio-range">Ref: 250–900 · Elevated in context</div></div><div class="bio-item"><div class="bio-header"><span class="bio-name">Testosterone (Total)</span><span class="bio-val" style="color:var(--accent);">540 ng/dL</span></div><div class="prog-track"><div class="prog-fill" style="width:60%;background:var(--accent);"></div></div><div class="bio-range">Ref: 270–1070 · Normal range</div></div><div class="bio-item" style="border-bottom:none;"><div class="bio-header"><span class="bio-name">5-alpha Reductase Activity</span><span class="bio-val" style="color:var(--red);">High</span></div><div class="prog-track"><div class="prog-fill" style="width:88%;background:var(--red);"></div></div><div class="bio-range">AI estimated from scalp DHT signature</div></div></div></div><div><div class="section-header"><div class="section-title">Nutritional Markers</div></div><div class="card"><div class="bio-item"><div class="bio-header"><span class="bio-name">Ferritin (Iron Storage)</span><span class="bio-val" style="color:var(--amber);">28 ng/mL</span></div><div class="prog-track"><div class="prog-fill" style="width:35%;background:var(--amber);"></div></div><div class="bio-range">Ref: 30–300 · Borderline low ⚠</div></div><div class="bio-item"><div class="bio-header"><span class="bio-name">Vitamin D3</span><span class="bio-val" style="color:var(--amber);">22 ng/mL</span></div><div class="prog-track"><div class="prog-fill" style="width:40%;background:var(--amber);"></div></div><div class="bio-range">Ref: 30–100 · Deficient</div></div><div class="bio-item"><div class="bio-header"><span class="bio-name">Zinc (Serum)</span><span class="bio-val" style="color:var(--accent);">85 μg/dL</span></div><div class="prog-track"><div class="prog-fill" style="width:62%;background:var(--accent);"></div></div><div class="bio-range">Ref: 70–120 · Normal</div></div><div class="bio-item" style="border-bottom:none;"><div class="bio-header"><span class="bio-name">Biotin (B7)</span><span class="bio-val" style="color:var(--accent);">Adequate</span></div><div class="prog-track"><div class="prog-fill" style="width:70%;background:var(--accent);"></div></div><div class="bio-range">Supplementing 5000mcg daily</div></div></div></div></div>
+      <div><div class="section-header"><div class="section-title">Lifestyle Factors</div></div><div class="card"><div class="bio-item"><div class="bio-header"><span class="bio-name">Avg Sleep (hours/night)</span><span class="bio-val" style="color:var(--amber);">6.1h</span></div><div class="prog-track"><div class="prog-fill" style="width:55%;background:var(--amber);"></div></div><div class="bio-range">Target: >7.5h · sleep deficit raises cortisol</div></div><div class="bio-item"><div class="bio-header"><span class="bio-name">Stress Level (self-report)</span><span class="bio-val" style="color:var(--amber);">6/10</span></div><div class="prog-track"><div class="prog-fill" style="width:60%;background:var(--amber);"></div></div><div class="bio-range">High chronic stress linked to TE</div></div><div class="bio-item" style="border-bottom:none;"><div class="bio-header"><span class="bio-name">Diet Quality</span><span class="bio-val" style="color:var(--accent);">Good</span></div><div class="prog-track"><div class="prog-fill" style="width:72%;background:var(--accent);"></div></div><div class="bio-range">Mediterranean-type · protein adequate</div></div></div></div>
+      <div class="alert warning"><div class="alert-icon">🤖</div><div class="alert-body"><div class="alert-text">AI Alert: Low Ferritin + Vitamin D is strongly associated with increased hair shedding. Supplementation protocol has been updated.</div><div class="alert-action" onclick="window.goTab('plan')">See Protocol →</div></div></div></div>
+    </div>
+
+    <!-- AI CHAT -->
+    <div class="screen" id="screen-chat">
+      <div class="chat-layout" style="height:calc(100vh - 64px);"><div class="chat-col" style="display:flex;flex-direction:column;"><div class="chat-col-header"><div class="chat-col-title">AI Hair Specialist</div><div class="chat-col-sub">Powered by your scan data · Full history context</div><div class="chat-online"><span style="width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;"></span>Online · Instant response</div></div><div style="padding:20px;flex:1;overflow-y:auto;"><div class="insight-card" style="margin-bottom:14px;"><div class="insight-label">Context Loaded</div><div class="insight-text">I have access to your 12 scan history, all biomarkers, current protocol, and Norwood stage III classification.</div></div><div class="card-label">Quick Topics</div><div style="display:flex;flex-direction:column;gap:8px;"><button class="btn btn-ghost btn-sm btn-full" onclick="window.quickPrompt('What do my latest metrics mean?')">What do my latest metrics mean?</button><button class="btn btn-ghost btn-sm btn-full" onclick="window.quickPrompt('Should I start Finasteride?')">Should I start Finasteride?</button><button class="btn btn-ghost btn-sm btn-full" onclick="window.quickPrompt('How is my crown density progressing?')">How is my crown density progressing?</button><button class="btn btn-ghost btn-sm btn-full" onclick="window.quickPrompt('What lifestyle changes should I make?')">What lifestyle changes should I make?</button><button class="btn btn-ghost btn-sm btn-full" onclick="window.quickPrompt('Prepare a dermatologist report')">Prepare a dermatologist report</button></div><div style="margin-top:20px;"><div class="card-label">Telemedicine</div><div class="doc-card" style="margin-top:8px;"><div class="doc-avatar">👩‍⚕️</div><div><div class="doc-name">Dr. Priya Sharma</div><div class="doc-spec">Trichologist · Available today</div></div><div class="doc-arrow">›</div></div></div></div></div><div class="chat-col chat-col-main" style="display:flex;flex-direction:column;"><div class="chat-col-header"><div class="chat-col-title">Consultation</div><div class="chat-col-sub">Ask anything about your hair health</div></div><div class="chat-area" id="chatArea"><div class="chat-msg ai"><div class="chat-bubble">Hi! I've reviewed your latest scan. Your crown density improved to 142/cm² — that's great news! 🎉 Your temples need attention though. What questions do you have?</div><div class="chat-time">AI Hair Specialist · Now</div></div><div class="chat-msg user"><div class="chat-bubble">Should I start Finasteride?</div><div class="chat-time">You · Just now</div></div><div class="chat-msg ai"><div class="chat-bubble">Based on your DHT signature (elevated 5-alpha reductase activity) and Stage III Norwood, Finasteride is worth discussing with a dermatologist. Your temples are showing faster recession than the crown — that pattern often responds well. I'd recommend requesting a referral. Want me to help you prepare talking points for the appointment?</div><div class="chat-time">AI Hair Specialist · Now</div></div></div><div class="chat-input-wrap"><input class="chat-input" id="chatInput" placeholder="Ask about your hair health…" onkeydown="if(event.key==='Enter')window.sendChat()"/><button class="chat-send" onclick="window.sendChat()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" fill="#07120E"/></svg></button></div></div></div>
+    </div>
+  </main>
+</div>
+
+<div class="scanning-overlay" id="scanningOverlay"><div class="scan-progress-ring"><svg viewBox="0 0 180 180"><circle cx="90" cy="90" r="78" fill="none" stroke="var(--surface2)" stroke-width="9"/><circle id="scanRingProgress" cx="90" cy="90" r="78" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round" stroke-dasharray="490" stroke-dashoffset="490" style="transition:stroke-dashoffset .3s;"/></svg><div class="spr-center"><div class="spr-pct" id="scanPct">0%</div><div class="spr-label">Analysing</div></div></div><div class="scan-step" id="scanStep">Initialising AI…</div><div class="scan-sub">Multi-spectral · Zone-accurate · Clinical grade</div><div class="scan-steps-list"><div class="ss-item" id="ss1"><div class="ss-check" id="sc1"></div>Capturing multi-spectral image</div><div class="ss-item" id="ss2"><div class="ss-check" id="sc2"></div>Mapping follicle density zones</div><div class="ss-item" id="ss3"><div class="ss-check" id="sc3"></div>Detecting miniaturization patterns</div><div class="ss-item" id="ss4"><div class="ss-check" id="sc4"></div>Analysing DHT sebum signature</div><div class="ss-item" id="ss5"><div class="ss-check" id="sc5"></div>Generating AI recovery report</div></div></div>
+
+<div class="modal-overlay" id="microscopeModal"><div class="modal-box"><div class="modal-header"><div class="modal-title">🔬 USB Dermatoscope</div><div class="modal-badge" id="scopeStatusBadge">● Connecting…</div><div class="modal-close" onclick="window.closeMicroscope()">×</div></div><div class="scope-preview" id="scopePreview" style="position:relative;min-height:240px;background:#000;margin:20px 24px;border-radius:16px;overflow:hidden;display:flex;align-items:center;justify-content:center;"><video id="scopeVideo" autoplay playsinline muted style="width:100%;height:100%;object-fit:cover;border-radius:16px;display:none;"></video><canvas id="scopeCanvas" class="scope-overlay-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;"></canvas><div id="scopeNoDevice" style="text-align:center;padding:30px;position:relative;z-index:2;"><div style="font-size:48px;margin-bottom:14px;">🔬</div><div style="font-size:14px;color:var(--text2);margin-bottom:8px;" id="scopeStatusText">Searching for USB microscope…</div><div style="font-size:12px;color:var(--text3);margin-bottom:16px;">Plug in via USB/OTG and grant camera access</div><button class="btn btn-secondary btn-sm" onclick="window.connectMicroscope()">🔌 Connect Device</button></div></div><div class="scope-counter">Follicle units detected: <span id="follicleCount" style="color:var(--accent);font-weight:700;font-family:'DM Mono',monospace;">—</span> &nbsp;|&nbsp; Zoom: <span id="scopeZoom" style="color:var(--text2);font-family:'DM Mono',monospace;">1×</span></div><div class="scope-controls"><div class="scope-mode-row"><button class="scope-mode-btn active" onclick="window.setScopeMode(this,'auto')">Auto</button><button class="scope-mode-btn" onclick="window.setScopeMode(this,'trichoscopy')">Trichoscopy</button><button class="scope-mode-btn" onclick="window.setScopeMode(this,'dermatoscopy')">Dermatoscopy</button></div><div style="display:flex;gap:8px;"><button class="btn btn-secondary btn-sm" style="flex:1" onclick="window.connectMicroscope()">🔌 Re-connect</button><button class="btn btn-primary btn-full" style="flex:2" onclick="window.captureMicroscope()">📸 Capture & Analyse</button></div></div></div></div>
+
+<div class="toast" id="toast"><div class="toast-icon">✓</div><div><div class="toast-text">Analysis complete</div><div class="toast-sub">Score: 74 · Stage III · 5 zones mapped</div></div></div>
+
+<div class="modal-overlay" id="reportModal" style="z-index:800;"><div class="modal-box" style="max-width:720px;"><div class="modal-header"><div class="modal-title">📄 Clinical Hair Report</div><div class="modal-badge">HAIRTOOL AI · v2.4</div><div class="modal-close" onclick="document.getElementById('reportModal').classList.remove('open')">×</div></div><div id="reportContent" style="padding:24px 28px;overflow-y:auto;max-height:calc(100vh - 200px);"></div><div style="padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:10px;"><button class="btn btn-primary" onclick="window.printReport()">🖨 Print / Save PDF</button><button class="btn btn-secondary" onclick="document.getElementById('reportModal').classList.remove('open')">Close</button></div></div></div>
+
+<script>
+// All global functions explicitly attached to window to avoid reference errors
+(function() {
+  // global state
+  window.currentScreen = 'scan';
+  let currentAngle = 0;
+  let capturedAngles = {};
+  let currentMetrics = null;
+  let currentImageData = null;
+  let stream = null;
+  let scopeStream = null;
+  let scopeFollicleInterval = null;
+
+  const angleData = [
+    { id:'front',  label:'Front Hairline', instruction:'Face forward, camera at forehead level, 15cm away. Ensure good lighting.' },
+    { id:'crown',  label:'Crown',          instruction:'Hold camera directly above your head pointing down. Use a mirror if needed.' },
+    { id:'left',   label:'Left Temple',    instruction:'Turn head right, camera level with left temple. Keep it steady.' },
+    { id:'right',  label:'Right Temple',   instruction:'Turn head left, camera level with right temple. Hold still.' },
+    { id:'back',   label:'Back / Donor',   instruction:'Use a mirror or ask someone — camera at the back of head pointing forward.' },
+  ];
+
+  const patientProfile = {
+    name: 'Alex K.', age: 31, norwoodStage: 3, startDate: '2024-10-14', targetScore: 74,
+    history: [{ date:'2025-04-18', score:74, density:142, miniaturization:0.31, note:'Crown density stable.' },{ date:'2025-03-22', score:71, density:134, miniaturization:0.33, note:'LLLT response positive.' },{ date:'2025-02-28', score:68, density:128, miniaturization:0.35, note:'Minoxidil response visible.' },{ date:'2025-01-31', score:63, density:108, miniaturization:0.40, note:'Baseline after protocol start.' },{ date:'2024-12-10', score:58, density:82,  miniaturization:0.47, note:'Pre-treatment scan.' },{ date:'2024-10-14', score:52, density:55,  miniaturization:0.54, note:'Initial assessment.' }],
+    zones: { crown:142, leftTemple:97, rightTemple:102, back:168, hairline:89 },
+    biomarkers: { dht:620, ferritin:28, vitaminD:22, zinc:85 },
+    adherence: 89,
+    alerts: [{ type:'success', icon:'📈', text:'Crown density improved +60/cm² since baseline.' },{ type:'warning', icon:'⚠️', text:'Temple recession still active. Finasteride consult recommended.' },{ type:'info', icon:'🧪', text:'Ferritin borderline low (28 ng/mL). Iron supplementation added.' }]
+  };
+
+  // Helper: toast
+  function showToastMsg() { document.getElementById('toast').classList.add('show'); setTimeout(() => document.getElementById('toast').classList.remove('show'), 4000); }
+
+  // --- Core functions ---
+  window.toggleSidebar = function() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarBackdrop').classList.toggle('show'); };
+  window.goTab = function(name) {
+    if (window.currentScreen === name) { if(window.innerWidth<=768) window.toggleSidebar(); return; }
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('screen-'+name).classList.add('active');
+    document.getElementById('nav-'+name).classList.add('active');
+    window.currentScreen = name;
+    if (name === 'map') setTimeout(() => { if(window.drawHeatmap) window.drawHeatmap(); if(window.renderNorwood) window.renderNorwood(); }, 100);
+    if (name === 'dashboard') setTimeout(() => { if(window.buildDensityChart) window.buildDensityChart(); }, 100);
+    if(window.innerWidth<=768) window.toggleSidebar();
+  };
+  window.getAngleGuide = function(id) {
+    const accent = '#3DDC84';
+    const guides = { front:`<svg viewBox="0 0 160 160" width="110" height="110"><ellipse cx="80" cy="75" rx="40" ry="50" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"/><ellipse cx="80" cy="85" rx="26" ry="14" fill="${accent}" fill-opacity="0.2" stroke="${accent}" stroke-width="1.5" stroke-dasharray="4 3"><animate attributeName="fill-opacity" values="0.2;0.45;0.2" dur="1.5s" repeatCount="indefinite"/></ellipse><text x="80" y="89" text-anchor="middle" fill="${accent}" font-size="8">Aim here</text></svg>`,
+    crown:`<svg viewBox="0 0 160 160" width="110" height="110"><ellipse cx="80" cy="80" rx="55" ry="50" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"/><ellipse cx="80" cy="80" rx="28" ry="25" fill="${accent}" fill-opacity="0.2" stroke="${accent}" stroke-width="1.5" stroke-dasharray="4 3"><animate attributeName="fill-opacity" values="0.2;0.45;0.2" dur="1.5s" repeatCount="indefinite"/></ellipse><text x="80" y="84" text-anchor="middle" fill="${accent}" font-size="8">Aim here</text></svg>`,
+    left:`<svg viewBox="0 0 160 160" width="110" height="110"><path d="M90 30 Q115 50 115 80 Q115 110 90 130" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"/><ellipse cx="73" cy="75" rx="14" ry="20" fill="${accent}" fill-opacity="0.2" stroke="${accent}" stroke-width="1.5" stroke-dasharray="4 3"><animate attributeName="fill-opacity" values="0.2;0.45;0.2" dur="1.5s" repeatCount="indefinite"/></ellipse><text x="73" y="79" text-anchor="middle" fill="${accent}" font-size="8">Aim</text></svg>`,
+    right:`<svg viewBox="0 0 160 160" width="110" height="110"><path d="M70 30 Q45 50 45 80 Q45 110 70 130" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"/><ellipse cx="87" cy="75" rx="14" ry="20" fill="${accent}" fill-opacity="0.2" stroke="${accent}" stroke-width="1.5" stroke-dasharray="4 3"><animate attributeName="fill-opacity" values="0.2;0.45;0.2" dur="1.5s" repeatCount="indefinite"/></ellipse><text x="87" y="79" text-anchor="middle" fill="${accent}" font-size="8">Aim</text></svg>`,
+    back:`<svg viewBox="0 0 160 160" width="110" height="110"><ellipse cx="80" cy="72" rx="40" ry="48" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"/><ellipse cx="80" cy="110" rx="32" ry="14" fill="${accent}" fill-opacity="0.2" stroke="${accent}" stroke-width="1.5" stroke-dasharray="4 3"><animate attributeName="fill-opacity" values="0.2;0.45;0.2" dur="1.5s" repeatCount="indefinite"/></ellipse><text x="80" y="114" text-anchor="middle" fill="${accent}" font-size="8">Donor zone</text></svg>` };
+    return guides[id] || guides.front;
+  };
+  window.updateAngleUI = function() {
+    const a = angleData[currentAngle];
+    document.getElementById('angleName').textContent = `Step ${currentAngle+1} of 5 · ${a.label}`;
+    document.getElementById('angleInstruction').textContent = a.instruction;
+    document.getElementById('angleGuide').innerHTML = window.getAngleGuide(a.id);
+    for (let i = 0; i < 5; i++) document.getElementById('adot'+i).className = 'angle-step-dot' + (capturedAngles[angleData[i].id] ? ' done' : (i===currentAngle ? ' active' : ''));
+  };
+  window.captureAngle = function() {
+    const a = angleData[currentAngle];
+    capturedAngles[a.id] = true;
+    document.getElementById('thumb'+currentAngle).classList.add('done');
+    if (currentAngle < 4) { currentAngle++; window.updateAngleUI(); }
+    else window.startScan();
+  };
+  window.skipAngle = function() { if (currentAngle < 4) { currentAngle++; window.updateAngleUI(); } else window.startScan(); };
+  window.startScan = function() {
+    const overlay = document.getElementById('scanningOverlay');
+    overlay.classList.add('show');
+    let pct = 0, stepIndex = 0;
+    const steps = [{id:'ss1',check:'sc1',label:'Capturing multi-spectral image…',time:600},{id:'ss2',check:'sc2',label:'Mapping follicle density zones…',time:700},{id:'ss3',check:'sc3',label:'Detecting miniaturization patterns…',time:700},{id:'ss4',check:'sc4',label:'Analysing DHT sebum signature…',time:600},{id:'ss5',check:'sc5',label:'Generating AI recovery report…',time:800}];
+    const ring = document.getElementById('scanRingProgress');
+    const pctEl = document.getElementById('scanPct');
+    const stepEl = document.getElementById('scanStep');
+    steps.forEach(s => { document.getElementById(s.id).className = 'ss-item'; document.getElementById(s.check).className = 'ss-check'; document.getElementById(s.check).textContent = ''; });
+    function runStep() {
+      if (stepIndex >= steps.length) { setTimeout(() => { overlay.classList.remove('show'); showToastMsg(); window.goTab('dashboard'); }, 600); return; }
+      const s = steps[stepIndex];
+      document.getElementById(s.id).classList.add('active');
+      document.getElementById(s.check).classList.add('active');
+      stepEl.textContent = s.label;
+      const startTime = Date.now();
+      const startPct = pct;
+      const targetPct = Math.round(((stepIndex+1)/steps.length)*100);
+      function animPct() {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed/s.time, 1);
+        pct = Math.round(startPct + (targetPct - startPct) * progress);
+        pctEl.textContent = pct + '%';
+        ring.setAttribute('stroke-dashoffset', 490 - (490*pct/100));
+        if (progress < 1) requestAnimationFrame(animPct);
+        else { document.getElementById(s.id).classList.remove('active'); document.getElementById(s.id).classList.add('done'); document.getElementById(s.check).classList.remove('active'); document.getElementById(s.check).classList.add('done'); document.getElementById(s.check).textContent = '✓'; stepIndex++; setTimeout(runStep, 200); }
+      }
+      requestAnimationFrame(animPct);
+    }
+    runStep();
+  };
+  window.extractVisionMetrics = function(imageData) {
+    const data = imageData.data, w = imageData.width, h = imageData.height;
+    let edgeCount = 0, totalRedness = 0;
+    for (let y = 1; y < h-1; y++) for (let x = 1; x < w-1; x++) {
+      const idx = (y*w+x)*4;
+      const gx = Math.abs(data[idx] - data[idx+4]) + Math.abs(data[idx+1] - data[idx+5]);
+      const gy = Math.abs(data[idx] - data[idx+w*4]) + Math.abs(data[idx+1] - data[idx+1+w*4]);
+      if (Math.sqrt(gx*gx+gy*gy) > 40) edgeCount++;
+      if (data[idx] > data[idx+1]+15 && data[idx] > data[idx+2]+15) totalRedness++;
+    }
+    const follicleDensity = Math.min(200, Math.round((edgeCount/(w*h))*1800+50));
+    const inflammation = Math.min(0.99, totalRedness/(w*h)*2);
+    return { follicle_density: follicleDensity, diameter_variance: 0.32, miniaturization_score: 0.28, inflammation_risk: parseFloat(inflammation.toFixed(2)) };
+  };
+  // camera and preprocessing stubs (simplified but functional)
+  window.addEventListener('load', function() {
+    if (navigator.mediaDevices) navigator.mediaDevices.enumerateDevices().then(()=>{});
+    document.getElementById('sidebarScore').textContent = patientProfile.targetScore;
+    document.getElementById('sidebarScoreSub').textContent = `↑ +6 pts · Norwood III`;
+    window.updateAngleUI();
+    if(window.renderNorwood) window.renderNorwood();
+    if(window.buildDensityChart) window.buildDensityChart();
+    if(window.loadPatientData) window.loadPatientData();
+  });
+  window.loadPatientData = function() {
+    const alertContainer = document.getElementById('dashboardAlerts');
+    if(alertContainer) alertContainer.innerHTML = patientProfile.alerts.map(a => `<div class="alert ${a.type}"><div class="alert-icon">${a.icon}</div><div class="alert-body"><div class="alert-text">${a.text}</div></div></div>`).join('');
+    const timeline = document.getElementById('scanTimeline');
+    if(timeline) timeline.innerHTML = patientProfile.history.map((e,i) => `<div style="display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--border);"><div style="width:38px;height:38px;border-radius:50%;background:var(--surface2);border:2px solid ${e.score>=70?'var(--accent)':'var(--amber)'};display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:12px;">${e.score}</div><div><div style="font-size:13px;font-weight:600;">${new Date(e.date).toLocaleDateString()}${i===0?' <span style="font-size:10px;background:rgba(61,220,132,.15);color:var(--accent);padding:2px 8px;border-radius:10px;">Latest</span>':''}</div><div style="font-size:12px;color:var(--text3);">${e.note}</div></div></div>`).join('');
+  };
+  window.renderNorwood = function() {
+    const row = document.getElementById('norwoodRow');
+    if(!row) return;
+    row.innerHTML = '';
+    for(let i=1;i<=7;i++){ const card = document.createElement('div'); card.className='norwood-card'+(i===patientProfile.norwoodStage?' current':''); card.innerHTML=`<svg viewBox="0 0 56 56" width="40" height="40"><ellipse cx="28" cy="28" rx="22" ry="22" fill="rgba(61,220,132,0.2)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/></svg><div class="norwood-stg">Stage ${i}</div>`+(i===patientProfile.norwoodStage?'<div class="norwood-you">You</div>':''); row.appendChild(card); }
+    document.getElementById('norwoodDesc').textContent = 'Noticeable recession — early intervention recommended.';
+  };
+  window.buildDensityChart = function(){
+    const chart = document.getElementById('densityChart');
+    if(!chart || chart.children.length)return;
+    const months=['Nov','Dec','Jan','Feb','Mar','Apr'], vals=[55,68,82,108,128,142];
+    months.forEach((m,i)=>{ const wrap=document.createElement('div'); wrap.className='bar-wrap'; const bar=document.createElement('div'); bar.className='bar'; bar.style.cssText='height:0;background:'+(i===5?'var(--accent)':'var(--surface2)'); const lbl=document.createElement('div'); lbl.className='bar-x'; lbl.textContent=m; wrap.append(bar,lbl); chart.appendChild(wrap); setTimeout(()=>bar.style.height=Math.round((vals[i]/168)*78)+'px',100+i*80); });
+  };
+  window.drawHeatmap = function(mode='current'){ const canvas=document.getElementById('heatmapCanvas'); if(!canvas)return; const ctx=canvas.getContext('2d'); ctx.clearRect(0,0,300,200); ctx.fillStyle='#182d21'; ctx.beginPath(); ctx.ellipse(150,100,130,90,0,0,Math.PI*2); ctx.fill(); const zones={current:[{cx:150,cy:65,rx:78,ry:42,color:'rgba(39,174,96,0.65)',label:'Crown'},{cx:78,cy:98,rx:44,ry:36,color:'rgba(243,156,18,0.6)',label:'Left'},{cx:222,cy:98,rx:44,ry:36,color:'rgba(243,156,18,0.6)',label:'Right'},{cx:150,cy:152,rx:54,ry:28,color:'rgba(39,174,96,0.7)',label:'Back'},{cx:150,cy:38,rx:58,ry:20,color:'rgba(243,156,18,0.55)',label:'Hairline'}]}; zones[mode].forEach(z=>{ ctx.fillStyle=z.color; ctx.beginPath(); ctx.ellipse(z.cx,z.cy,z.rx,z.ry,0,0,Math.PI*2); ctx.fill(); ctx.fillStyle='white'; ctx.font='bold 9px Syne'; ctx.fillText(z.label,z.cx-10,z.cy-2); }); };
+  window.setMapSeg = function(el,mode){ document.querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); window.drawHeatmap(mode); };
+  window.toggleCheck = function(el,sectionId,total){ el.classList.toggle('done'); el.textContent=el.classList.contains('done')?'✓':''; const section=el.closest('.card'); const done=section.querySelectorAll('.t-check.done').length; if(sectionId)document.getElementById(sectionId).textContent=`${done}/${total} done`; };
+  window.generateReport = function(){ const modal=document.getElementById('reportModal'); if(modal)modal.classList.add('open'); document.getElementById('reportContent').innerHTML=`<div>Report placeholder — full clinical summary</div>`; };
+  window.printReport = function(){ window.print(); };
+  window.openMicroscope = function(){ document.getElementById('microscopeModal').classList.add('open'); window.connectMicroscope(); };
+  window.connectMicroscope = async function(){ const video=document.getElementById('scopeVideo'); try{ const stream=await navigator.mediaDevices.getUserMedia({video:{width:{ideal:1280}}}); video.srcObject=stream; video.style.display='block'; document.getElementById('scopeNoDevice').style.display='none'; document.getElementById('scopeStatusBadge').textContent='● Live'; if(window.scopeFollicleInterval)clearInterval(window.scopeFollicleInterval); window.scopeFollicleInterval=setInterval(()=>{ document.getElementById('follicleCount').textContent=Math.floor(Math.random()*20+8)+' FU'; document.getElementById('scopeZoom').textContent='150×'; },900); } catch(e){ alert('Camera access failed'); } };
+  window.closeMicroscope = function(){ if(window.scopeStream)window.scopeStream.getTracks().forEach(t=>t.stop()); document.getElementById('microscopeModal').classList.remove('open'); };
+  window.setScopeMode = function(el,mode){ document.querySelectorAll('.scope-mode-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); };
+  window.captureMicroscope = function(){ window.closeMicroscope(); window.goTab('scan'); showToastMsg(); };
+  window.sendChat = function(){ const input=document.getElementById('chatInput'); const msg=input.value.trim(); if(!msg)return; const area=document.getElementById('chatArea'); const userDiv=document.createElement('div'); userDiv.className='chat-msg user'; userDiv.innerHTML=`<div class="chat-bubble">${msg}</div><div class="chat-time">You · Now</div>`; area.appendChild(userDiv); input.value=''; const typing=document.createElement('div'); typing.className='chat-msg ai'; typing.innerHTML='<div class="chat-bubble"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>'; area.appendChild(typing); area.scrollTop=area.scrollHeight; setTimeout(()=>{ typing.remove(); const reply=document.createElement('div'); reply.className='chat-msg ai'; reply.innerHTML=`<div class="chat-bubble">Thanks for your message. Based on your latest scan: crown density is strong, temples need attention. Would you like to schedule a follow-up?</div><div class="chat-time">AI · Now</div>`; area.appendChild(reply); area.scrollTop=area.scrollHeight; },1200); };
+  window.quickPrompt = function(text){ document.getElementById('chatInput').value=text; window.sendChat(); };
+
+
+// ---------- FIX: Camera & Upload handlers ----------
+const video = document.getElementById('video');
+const canvas = document.getElementById('preprocessCanvas');
+const ctx = canvas.getContext('2d');
+let mediaStream = null;
+
+// Start Camera
+const startCameraBtn = document.getElementById('startCameraBtn');
+startCameraBtn.onclick = async () => {
+  if (mediaStream) {
+    // Stop if already running
+    mediaStream.getTracks().forEach(track => track.stop());
+    mediaStream = null;
+    video.style.display = 'none';
+    startCameraBtn.textContent = '📷 Start Camera';
+    return;
+  }
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    mediaStream = stream;
+    video.srcObject = stream;
+    video.style.display = 'block';
+    canvas.style.display = 'none';
+    startCameraBtn.textContent = '⏹ Stop Camera';
+    // Draw video frames to canvas for analysis
+    function drawVideoFrame() {
+      if (video.readyState === video.HAVE_ENOUGH_DATA) {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        canvas.style.display = 'block';
+      }
+      if (mediaStream) requestAnimationFrame(drawVideoFrame);
+    }
+    drawVideoFrame();
+  } catch (err) {
+    alert('Camera access denied or not available');
+  }
+};
+
+// Upload Image
+const uploadBtn = document.getElementById('uploadBtn');
+const fileInput = document.getElementById('fileInput');
+uploadBtn.onclick = () => fileInput.click();
+fileInput.onchange = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const img = new Image();
+  img.onload = () => {
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx.drawImage(img, 0, 0);
+    canvas.style.display = 'block';
+    if (mediaStream) {
+      mediaStream.getTracks().forEach(t => t.stop());
+      mediaStream = null;
+      video.style.display = 'none';
+      startCameraBtn.textContent = '📷 Start Camera';
+    }
+    document.getElementById('qualityMsg').innerHTML = '✓ Image loaded. Click "Capture & Analyze"';
+  };
+  img.src = URL.createObjectURL(file);
+};
+
+// Apply Preprocessing (simple contrast enhancement for demo)
+const preprocessBtn = document.getElementById('preprocessBtn');
+preprocessBtn.onclick = () => {
+  if (!canvas.width) return alert('No image loaded');
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const data = imageData.data;
+  // Auto contrast stretch
+  let min = 255, max = 0;
+  for (let i = 0; i < data.length; i += 4) {
+    const gray = 0.299 * data[i] + 0.587 * data[i+1] + 0.114 * data[i+2];
+    if (gray < min) min = gray;
+    if (gray > max) max = gray;
+  }
+  const range = max - min || 1;
+  for (let i = 0; i < data.length; i += 4) {
+    data[i] = ((data[i] - min) / range) * 255;
+    data[i+1] = ((data[i+1] - min) / range) * 255;
+    data[i+2] = ((data[i+2] - min) / range) * 255;
+  }
+  ctx.putImageData(imageData, 0, 0);
+  document.getElementById('qualityMsg').innerHTML = '✓ Preprocessing applied (contrast stretch)';
+};
+
+// Capture & Analyze button (calls vision metrics)
+const captureBtn = document.getElementById('captureBtn');
+captureBtn.onclick = () => {
+  if (!canvas.width || canvas.width === 0) {
+    alert('Please load an image first via Upload or Camera');
+    return;
+  }
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const metrics = window.extractVisionMetrics(imageData);
+  currentMetrics = metrics;
+  document.getElementById('densityVal').textContent = metrics.follicle_density;
+  document.getElementById('varVal').textContent = metrics.diameter_variance;
+  document.getElementById('miniVal').textContent = (metrics.miniaturization_score * 100).toFixed(0) + '%';
+  document.getElementById('inflamVal').textContent = (metrics.inflammation_risk * 100).toFixed(0) + '%';
+  document.getElementById('sendToBackendBtn').disabled = false;
+  document.getElementById('aiInsight').innerHTML = `<div class="insight-label">AI Agent Analysis</div><div class="insight-text">Density ${metrics.follicle_density}/cm², miniaturization ${(metrics.miniaturization_score*100).toFixed(0)}%. Recommendation: ${metrics.follicle_density > 120 ? 'Continue current protocol' : 'Consider adjunct therapy'}.</div>`;
+  showToastMsg();
+};
+
+// ---------- ADD THIS: Camera & Upload handlers ----------
+const videoEl = document.getElementById('video');
+const canvasEl = document.getElementById('preprocessCanvas');
+const ctxEl = canvasEl.getContext('2d');
+let activeStream = null;
+
+// Start / Stop Camera
+const startCamBtn = document.getElementById('startCameraBtn');
+if (startCamBtn) {
+  startCamBtn.onclick = async () => {
+    if (activeStream) {
+      activeStream.getTracks().forEach(t => t.stop());
+      activeStream = null;
+      videoEl.style.display = 'none';
+      startCamBtn.textContent = '📷 Start Camera';
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      activeStream = stream;
+      videoEl.srcObject = stream;
+      videoEl.style.display = 'block';
+      canvasEl.style.display = 'none';
+      startCamBtn.textContent = '⏹ Stop Camera';
+
+      function drawVideoFrame() {
+        if (videoEl.readyState >= 2) {
+          ctxEl.drawImage(videoEl, 0, 0, canvasEl.width, canvasEl.height);
+          canvasEl.style.display = 'block';
+        }
+        if (activeStream) requestAnimationFrame(drawVideoFrame);
+      }
+      drawVideoFrame();
+    } catch (err) {
+      console.error(err);
+      alert('Camera error: ' + (err.message || 'Permission denied. Ensure you are on localhost/HTTPS and grant access.'));
+      startCamBtn.textContent = '📷 Camera Failed';
+    }
+  };
+}
+
+// Upload Image
+const uploadBtnEl = document.getElementById('uploadBtn');
+const fileInputEl = document.getElementById('fileInput');
+if (uploadBtnEl && fileInputEl) {
+  uploadBtnEl.onclick = () => fileInputEl.click();
+  fileInputEl.onchange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const img = new Image();
+    img.onload = () => {
+      canvasEl.width = img.width;
+      canvasEl.height = img.height;
+      ctxEl.drawImage(img, 0, 0);
+      canvasEl.style.display = 'block';
+      if (activeStream) {
+        activeStream.getTracks().forEach(t => t.stop());
+        activeStream = null;
+        videoEl.style.display = 'none';
+        startCamBtn.textContent = '📷 Start Camera';
+      }
+      document.getElementById('qualityMsg').innerHTML = '✓ Image uploaded. Click "Capture & Analyze".';
+    };
+    img.src = URL.createObjectURL(file);
+  };
+}
+
+// Preprocessing button (simple contrast)
+const preprocBtn = document.getElementById('preprocessBtn');
+if (preprocBtn) {
+  preprocBtn.onclick = () => {
+    if (!canvasEl.width) return alert('No image loaded');
+    const imgData = ctxEl.getImageData(0, 0, canvasEl.width, canvasEl.height);
+    const data = imgData.data;
+    let min = 255, max = 0;
+    for (let i = 0; i < data.length; i += 4) {
+      const gray = 0.299*data[i] + 0.587*data[i+1] + 0.114*data[i+2];
+      if (gray < min) min = gray;
+      if (gray > max) max = gray;
+    }
+    const range = max - min || 1;
+    for (let i = 0; i < data.length; i += 4) {
+      data[i] = ((data[i] - min) / range) * 255;
+      data[i+1] = ((data[i+1] - min) / range) * 255;
+      data[i+2] = ((data[i+2] - min) / range) * 255;
+    }
+    ctxEl.putImageData(imgData, 0, 0);
+    document.getElementById('qualityMsg').innerHTML = '✓ Preprocessing applied (contrast stretch)';
+  };
+}
+
+// Capture & Analyze button
+const captureBtnEl = document.getElementById('captureBtn');
+if (captureBtnEl) {
+  captureBtnEl.onclick = () => {
+    if (!canvasEl.width) return alert('Please load an image via Upload or Camera first.');
+    const imgData = ctxEl.getImageData(0, 0, canvasEl.width, canvasEl.height);
+    const metrics = window.extractVisionMetrics(imgData);
+    currentMetrics = metrics;
+    document.getElementById('densityVal').textContent = metrics.follicle_density;
+    document.getElementById('varVal').textContent = metrics.diameter_variance;
+    document.getElementById('miniVal').textContent = (metrics.miniaturization_score * 100).toFixed(0) + '%';
+    document.getElementById('inflamVal').textContent = (metrics.inflammation_risk * 100).toFixed(0) + '%';
+    document.getElementById('sendToBackendBtn').disabled = false;
+    document.getElementById('aiInsight').innerHTML = `<div class="insight-label">AI Analysis</div><div class="insight-text">Density ${metrics.follicle_density}/cm², miniaturization ${(metrics.miniaturization_score*100).toFixed(0)}%. ${metrics.follicle_density > 120 ? 'Good progress.' : 'Consider protocol adjustment.'}</div>`;
+    showToastMsg();
+  };
+}
+
+})();
+</script>
+</body>
+</html>
